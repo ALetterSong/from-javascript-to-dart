@@ -4,16 +4,16 @@
 
 ## Dart 的一些特性
 
-- 尽管 Dart 是强类型的，但是 Dart 可以推断类型
-- 与 Java 不同，Dart 没有关键字 public， protected 和 private
-- Optional named parameters 与 Optional positional parameters
+- Dart 是静态类型的，但是 Dart 可以推断类型，类型系统也是可选的
+- Dart 没有关键字 public， protected 和 private
+- 支持 Optional named parameters 与 Optional positional parameters
 - 函数是一等公民
 - 级联操作符 / 条件成员访问操作符...
 - 继承 / 抽象类 / 隐式接口 ( class 即 interface ) / Mixin / 枚举
 - 支持泛型
 - 支持元数据（注解）
 - async 和 await 及 Future API / Stream API
-
+- 不支持对象字面量，函数重载，匿名内部类，联合类型，non-nullable types，tuples 等功能
 
 ## JavaScript to Dart
 
@@ -227,15 +227,8 @@ void main() {
 - Dart
 
 ```dart
-
+"1" + 2 // The argument type 'String' can't be assigned to the parameter type 'num'.
 ```
-
----
-### 多重条件
-
-### case 语句
-
-### for 循环
 
 ### 集合操作
 
@@ -276,10 +269,6 @@ print(fruits);
 fruits.clear();
 print(fruits.isEmpty);
 ```
-
-[control flow collections proposal](https://github.com/dart-lang/language/blob/master/accepted/2.3/control-flow-collections/feature-specification.md)
-
-### 遍历
 
 ---
 ###  方法定义
@@ -430,18 +419,30 @@ class Rectangle {
 
 [lodash#clone](https://lodash.com/docs/4.17.15#clone)
 
-```javascript
-function jsonClone(obj) {
-    return JSON.parse(JSON.stringify(obj));
-}
-
-```
-
 -  Dart
 
-```dart
+dart 不提供通用的 clone 方法，但可以自己实现 clone 方法。
 
+```dart
+class Foo {
+  int id;
+  String something;
+  List elements;
+
+  Foo(this.id, this.something, this.elements);
+
+  Foo.clone(Foo original)
+      : this(original.id, original.something, new List.from(original.elements));
+
+  @override
+  String toString() {
+    return 'Foo{id: $id, something: $something, elements: $elements}';
+  }
+}
 ```
+
+---
+
 ### Class 静态方法
 
 - JavaScript
@@ -464,8 +465,22 @@ class Utils {
 }
 ```
 
+---
+
 ### enum
 
+- Dart
+
+```dart
+enum Color { red, green, blue }
+
+void main() {
+  List<Color> colors = Color.values;
+  assert(colors[2] == Color.blue);
+}
+```
+
+---
 
 ### 排序
 
@@ -487,7 +502,39 @@ var fruits = ['bananas', 'apples', 'oranges'];
 fruits.sort();
 ```
 
+---
+
 ### 匿名类
+
+- JavaScript
+
+```javascript
+let Rectangle = class {
+  constructor(height, width) {
+    this.height = height;
+    this.width = width;
+  }
+};
+```
+
+- Dart
+
+Dart 不支持匿名类与内部类。
+
+---
+
+### Union Types
+
+JavaScript 和 Dart 都不支持 Union Types
+
+- TypeScript
+
+```typescript
+let myFavoriteNumber: string | number;
+myFavoriteNumber = 'seven';
+myFavoriteNumber = 7;
+```
+
 
 
 
